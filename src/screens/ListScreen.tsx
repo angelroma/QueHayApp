@@ -1,35 +1,84 @@
-import {View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
+import {ActivityIndicator, View, StyleSheet} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '@navigation/Stacks';
-import {Faker} from '@utils/faker';
 import ArtifactItem from '@components/ArtifactItem';
 import {FlashList} from '@shopify/flash-list';
 import {Types} from '@utils/types';
+import {Faker} from '@utils/faker';
+
+const ON_END_REACHED_THRESHOLD = 0.5;
+const ESTIMATED_ITEM_SIZE = 300;
+const ITEMS_PER_PAGE = 20;
 
 type Props = StackScreenProps<RootStackParamList, 'List'>;
 
-export default function ListScreen({navigation, route}: Props) {
-  const data = Faker.Artifact.create(80);
+const ListScreen: React.FC<Props> = () => {
+  const [artifacts, setArtifacts] = useState<Types.Artifact[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const [artifacts, setArtifacts] = React.useState(data);
+  const fetchArtifacts = useCallback(async ({page}: {page: number}) => {
+    setLoading(true);
+    const newArtifacts = await Faker.Artifact.create(ITEMS_PER_PAGE * page);
+    setArtifacts(prevArtifacts => [
+      ...prevArtifacts.slice(-ITEMS_PER_PAGE * (page - 1)),
+      ...newArtifacts,
+    ]);
+    setLoading(false);
+  }, []);
 
-  // Create a memoized version of the renderItem function
-  const renderItem = React.useCallback(
-    ({item, index}: {item: Types.Artifact; index: number}) => {
-      return <ArtifactItem item={item} key={item.name} />;
-    },
-    [],
+  useEffect(() => {
+    fetchArtifacts({
+      page: 1,
+    });
+  }, [fetchArtifacts]);
+
+  const loadMoreItems = useCallback(() => {
+    fetchArtifacts({
+      page: artifacts.length / ITEMS_PER_PAGE + 1,
+    });
+  }, [artifacts, fetchArtifacts]);
+
+  const onRefresh = useCallback(() => {
+    setArtifacts([]);
+    fetchArtifacts({
+      page: 1,
+    });
+  }, [fetchArtifacts]);
+
+  const renderItem = ({item}: {item: Types.Artifact; index: number}) => (
+    <ArtifactItem item={item} key={item.id} />
   );
 
+  const keyExtractor = (item: Types.Artifact) => item.id.toString();
+
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.container}>
       <FlashList
         data={artifacts}
         renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-        estimatedItemSize={300}
+        keyExtractor={keyExtractor}
+        estimatedItemSize={ESTIMATED_ITEM_SIZE}
+        onEndReached={loadMoreItems}
+        onEndReachedThreshold={ON_END_REACHED_THRESHOLD}
+        refreshing={loading}
+        onRefresh={onRefresh}
+        ListFooterComponent={
+          loading ? <ActivityIndicator style={styles.footer} /> : undefined
+        }
       />
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  footer: {
+    alignSelf: 'center',
+    margin: 20,
+  },
+});
+
+export default ListScreen;

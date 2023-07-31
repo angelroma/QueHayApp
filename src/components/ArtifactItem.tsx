@@ -66,7 +66,7 @@ const ArtifactItem = ({
   );
 };
 
-export default ArtifactItem;
+export default React.memo(ArtifactItem);
 
 const styles = StyleSheet.create({
   card: {
