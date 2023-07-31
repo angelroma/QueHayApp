@@ -11,7 +11,8 @@
       "@components/*": ["components/*"],
       "@navigation/*": ["navigation/*"],
       "@screens/*": ["screens/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@hooks/*": ["hooks/*"]
     }
   },
   "exclude": [

@@ -1,11 +1,54 @@
 export namespace Types {
+  export interface OperatingHours {
+    day: string;
+    open: string;
+    close: string;
+  }
+
+  export interface Review {
+    userId: string;
+    rating: number;
+    text: string;
+    date: Date;
+  }
+
   export type Feature =
     | 'Entrega a domicilio'
     | 'Para llevar'
     | 'Reservaciones'
     | 'Servicio en mesa';
 
-  export interface Geolocation {
+  export interface SocialMedia {
+    platform: string;
+    handle: string;
+  }
+
+  export interface OperationHours {
+    day: string;
+    openTime: string;
+    closeTime: string;
+  }
+
+  export interface UserInteraction {
+    likes: number;
+    dislikes: number;
+  }
+
+  export interface Tag {
+    id: string;
+    label: string;
+  }
+  export interface Category {
+    id: string;
+    name: string;
+  }
+
+  export interface Address {
+    street: string;
+    city: string;
+    state?: string; // optional, not all countries have states
+    postalCode: string;
+    country: string;
     latitude: number;
     longitude: number;
   }
@@ -14,19 +57,19 @@ export namespace Types {
     id: string;
     name: string;
     description: string;
-    images: string[];
-    createdAt: Date;
-    updatedAt: Date;
-    address: string;
+    imageUrls: string[];
+    createdTimestamp: Date;
+    updatedTimestamp: Date;
+    address: Address;
     features: Feature[];
-    geolocation: Geolocation;
-    contact: {
-      phone: string[];
-      facebook: string;
-      instagram: string;
-      twitter: string;
-      website: string;
-      email: string;
-    };
+    primaryPhone?: string;
+    secondaryPhone?: string;
+    email?: string;
+    website?: string;
+    socialMedia?: SocialMedia[];
+    tags: Tag[];
+    hoursOfOperation: OperationHours[];
+    userInteractions: UserInteraction;
+    category: string;
   }
 }

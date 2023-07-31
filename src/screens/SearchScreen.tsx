@@ -20,7 +20,10 @@ export default function SearchScreen({navigation}: Props) {
   const renderItem = ({item}) => <Text>{item}</Text>;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      style={{
+        backgroundColor: 'white',
+      }}>
       <View
         style={{
           flexDirection: 'row',
