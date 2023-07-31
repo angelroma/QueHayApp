@@ -13,7 +13,7 @@ const ITEMS_PER_PAGE = 20;
 
 type Props = StackScreenProps<RootStackParamList, 'List'>;
 
-const ListScreen: React.FC<Props> = () => {
+const ListScreen: React.FC<Props> = ({navigation}) => {
   const [artifacts, setArtifacts] = useState<Types.Artifact[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -39,6 +39,11 @@ const ListScreen: React.FC<Props> = () => {
     });
   }, [artifacts, fetchArtifacts]);
 
+  const handleOnItemPress = useCallback(
+    (item: Types.Artifact) => navigation.navigate('Artifact', {id: item.id}),
+    [navigation],
+  );
+
   const onRefresh = useCallback(() => {
     setArtifacts([]);
     fetchArtifacts({
@@ -47,7 +52,7 @@ const ListScreen: React.FC<Props> = () => {
   }, [fetchArtifacts]);
 
   const renderItem = ({item}: {item: Types.Artifact; index: number}) => (
-    <ArtifactItem item={item} key={item.id} />
+    <ArtifactItem item={item} key={item.id} onPress={handleOnItemPress} />
   );
 
   const keyExtractor = (item: Types.Artifact) => item.id.toString();

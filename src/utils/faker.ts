@@ -10,7 +10,17 @@ export namespace Faker {
           id: faker.string.uuid(),
           name: faker.commerce.productName(),
           description: faker.lorem.paragraph(),
-          imageUrls: [faker.image.url(), faker.image.url(), faker.image.url()],
+          imageUrls: [
+            faker.image.url(),
+            faker.image.url(),
+            faker.image.url(),
+            faker.image.url(),
+            faker.image.url(),
+            faker.image.url(),
+            faker.image.url(),
+            faker.image.url(),
+            faker.image.url(),
+          ],
           createdTimestamp: faker.date.past(),
           updatedTimestamp: faker.date.recent(),
           address: {

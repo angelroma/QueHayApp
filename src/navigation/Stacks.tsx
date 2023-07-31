@@ -7,11 +7,19 @@ import {
 import Icon from 'react-native-vector-icons/Feather';
 import SearchScreen from '@screens/SearchScreen';
 import ListScreen from '@screens/ListScreen';
+import ArtifactScreen from '@screens/ArtifactScreen';
+import ImageListScreen from '@screens/ImageListScreen';
 
 export type RootStackParamList = {
   Search: undefined;
   List: {
     term?: string;
+  };
+  Artifact: {
+    id: string;
+  };
+  ImageListScreen: {
+    images: string[];
   };
 };
 
@@ -41,6 +49,20 @@ export default function MainStack() {
         component={SearchScreen}
         options={() => ({
           header: () => null,
+        })}
+      />
+      <Stack.Screen
+        name="Artifact"
+        component={ArtifactScreen}
+        options={() => ({
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        })}
+      />
+      <Stack.Screen
+        name="ImageListScreen"
+        component={ImageListScreen}
+        options={() => ({
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         })}
       />
     </Stack.Navigator>

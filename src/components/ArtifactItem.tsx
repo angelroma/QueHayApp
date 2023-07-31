@@ -42,7 +42,9 @@ const ArtifactItem = ({
         </Text>
         <View style={styles.addressContainer}>
           <Feather name="map-pin" size={14} color="#666" />
-          <Text style={styles.address}>{item.address.street}</Text>
+          <Text style={styles.address} numberOfLines={1}>
+            {item.address.street}
+          </Text>
         </View>
         <View style={styles.features}>
           {Object.keys(featureIcon).map((feature, index) => (
