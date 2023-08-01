@@ -7,16 +7,16 @@ import {
   StyleSheet,
   Linking,
   TouchableOpacity,
-  FlatList,
 } from 'react-native';
 import {Faker} from '@utils/faker';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '@navigation/Stacks';
-import {Types} from '@utils/types';
 import Feather from 'react-native-vector-icons/Feather';
 import ImageGrid from '@components/ImageGrid';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {Toast, useToast} from '@components/core/';
+import {Constan} from '@utils/contants';
+import {Types} from '@utils/types';
 
 type Props = StackScreenProps<RootStackParamList, 'Artifact'>;
 
@@ -44,41 +44,50 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
     });
   };
 
-  const renderTag = ({item}: {item: Types.Tag}) => (
-    <View style={styles.tagContainer}>
-      <Text style={styles.tagText}>{item.label}</Text>
-    </View>
-  );
+  const handleUserInteraction = (type: 'like' | 'dislike') => {
+    console.log('handleUserInteraction', type);
+  };
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Image style={styles.image} source={{uri: artifact.imageUrls[0]}} />
         <Text style={styles.title}>{artifact.name}</Text>
+        {/* Tags */}
         <View style={styles.tagsContainer}>
-          <FlatList
-            horizontal
-            data={artifact.tags}
-            renderItem={renderTag}
-            keyExtractor={(_item, index) => index.toString()}
-          />
+          {artifact.tags.map((tag, index) => (
+            <View key={index} style={styles.tagContainer}>
+              <Text style={styles.tagText}>{tag.label}</Text>
+            </View>
+          ))}
         </View>
+
         <Text style={styles.description}>{artifact.description}</Text>
 
         <View style={styles.interactionContainer}>
           <View style={styles.likesDislikesContainer}>
-            <Text style={styles.userInteractionText}>
-              <Feather name={'thumbs-up'} size={20} color="gray" />
-              {artifact.userInteractions.likes}
-            </Text>
-            <Text style={styles.userInteractionText}>|</Text>
-            <Text style={styles.userInteractionText}>
-              <Feather name={'thumbs-down'} size={20} color="gray" />
-            </Text>
+            <TouchableOpacity
+              style={styles.interactionButton}
+              onPress={() => handleUserInteraction('like')}>
+              <Feather
+                name={'thumbs-up'}
+                size={20}
+                color={true ? '#4E9BDE' : 'gray'}
+              />
+              <Text style={styles.userInteractionText}>
+                {artifact.userInteractions.likes}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.interactionButton}
+              onPress={() => handleUserInteraction('dislike')}>
+              <Feather name={'thumbs-down'} size={20} color={'gray'} />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.shareContainer}>
-            <Feather name={'share-2'} size={20} color="#555" />
-            <Text style={styles.userInteractionText}>Share</Text>
+
+          <TouchableOpacity style={styles.shareButton} onPress={() => {}}>
+            <Feather name={'share-2'} size={20} color={'gray'} />
           </TouchableOpacity>
         </View>
 
@@ -155,9 +164,21 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
         {/* Features */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Features</Text>
-          {artifact.features.map((feature, index) => (
-            <View style={styles.featureContainer} key={index}>
-              <Feather name="check" size={14} color="#008000" />
+          {Object.keys(Constan.featureIcon).map((feature, index) => (
+            <View style={styles.featureItemContainer}>
+              <View
+                style={
+                  artifact.features.includes(feature as Types.Feature)
+                    ? styles.iconContainer
+                    : styles.iconContainerDisabled
+                }>
+                <Feather
+                  key={index}
+                  name={Constan.featureIcon[feature as Types.Feature]}
+                  size={16}
+                  color="white"
+                />
+              </View>
               <Text style={styles.featureText}>{feature}</Text>
             </View>
           ))}
@@ -189,6 +210,49 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
 };
 
 const styles = StyleSheet.create({
+  featureItemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  featureText: {
+    fontSize: 15, // increase the font size for better readability
+  },
+  sectionTitle: {
+    fontSize: 20, // increase the font size for better readability
+    fontWeight: 'bold',
+    color: '#000000',
+    paddingLeft: 10,
+  },
+  interactionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',
+    padding: 15, // increase the padding for larger touch area
+    borderRadius: 10,
+    marginHorizontal: 5,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 20, // increase the font size for better readability
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  interactionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  likesDislikesContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  shareButton: {
+    backgroundColor: '#f0f0f0',
+    padding: 10,
+    borderRadius: 10,
+  },
   button: {
     backgroundColor: '#4E9BDE', // choose a noticeable color, light blue in this case
     paddingVertical: 10, // increase padding for larger touch area
@@ -201,17 +265,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1,
     elevation: 3,
-  },
-  buttonText: {
-    color: '#FFFFFF', // text color that contrasts with the button color
-    fontSize: 18, // larger font size
-    fontWeight: 'bold', // make the text bold
-    textAlign: 'center', // center the text within the button
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000000', // black text for better contrast
   },
   contactItem: {
     flexDirection: 'row',
@@ -256,6 +309,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000000', // black text for better contrast
     marginHorizontal: 5,
+    marginLeft: 5,
   },
   categoryText: {
     fontSize: 18,
@@ -267,12 +321,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000000', // black text for better contrast
   },
-
-  featureText: {
-    fontSize: 16,
-    color: '#333333', // darker gray for better contrast
-    marginLeft: 5,
-  },
   hoursText: {
     fontSize: 16,
     color: '#333333', // darker gray for better contrast
@@ -283,13 +331,16 @@ const styles = StyleSheet.create({
   },
   tagsContainer: {
     flexDirection: 'row',
-    marginTop: 10,
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    width: '100%', // to ensure the container takes up all available space
   },
   tagContainer: {
     marginRight: 10,
     backgroundColor: '#ddd',
     borderRadius: 10,
     padding: 8,
+    margin: 2,
   },
   section: {
     marginVertical: 10,
@@ -300,17 +351,6 @@ const styles = StyleSheet.create({
   featureContainer: {
     flexDirection: 'row',
     marginTop: 5,
-  },
-  interactionContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  likesDislikesContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   shareContainer: {
     flexDirection: 'row',
@@ -342,6 +382,25 @@ const styles = StyleSheet.create({
   hoursTime: {
     fontSize: 16,
     color: '#666666',
+  },
+  iconContainer: {
+    marginRight: 10,
+    backgroundColor: '#333',
+    borderRadius: 50,
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconContainerDisabled: {
+    marginRight: 10,
+    backgroundColor: '#999',
+    borderRadius: 50,
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    opacity: 0.3,
   },
 });
 

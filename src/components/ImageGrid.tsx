@@ -3,7 +3,6 @@ import {
   View,
   Image,
   TouchableOpacity,
-  FlatList,
   StyleSheet,
   Text,
   Modal,
@@ -20,16 +19,10 @@ const ImageGrid: React.FC<ImageGridProps> = ({images, onSeeMorePress}) => {
 
   const imagesToShow = images.slice(0, 6);
 
-  const renderImage = ({item}: {item: string; index: number}) => (
-    <TouchableOpacity
-      onPress={() => {
-        setActiveImage(item);
-        setModalVisible(true);
-      }}
-      style={styles.imageContainer}>
-      <Image source={{uri: item}} style={styles.image} />
-    </TouchableOpacity>
-  );
+  const rows = [];
+  for (let i = 0; i < imagesToShow.length; i += 3) {
+    rows.push(imagesToShow.slice(i, i + 3));
+  }
 
   return (
     <View style={styles.container}>
@@ -42,12 +35,24 @@ const ImageGrid: React.FC<ImageGridProps> = ({images, onSeeMorePress}) => {
           </TouchableOpacity>
         )}
       </View>
-      <FlatList
-        data={imagesToShow}
-        renderItem={renderImage}
-        numColumns={3}
-        keyExtractor={(item, index) => index.toString()}
-      />
+
+      {/* Images */}
+      {rows.map((row, rowIndex) => (
+        <View key={rowIndex} style={styles.row}>
+          {row.map((image, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => {
+                setActiveImage(image);
+                setModalVisible(true);
+              }}
+              style={styles.imageContainer}>
+              <Image source={{uri: image}} style={styles.image} />
+            </TouchableOpacity>
+          ))}
+        </View>
+      ))}
+
       <Modal
         animationType="none"
         transparent={false}
@@ -83,6 +88,9 @@ const styles = StyleSheet.create({
   },
   seeMoreText: {
     color: '#007BFF',
+  },
+  row: {
+    flexDirection: 'row',
   },
   imageContainer: {
     flex: 1,

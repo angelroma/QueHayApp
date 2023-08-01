@@ -33,12 +33,10 @@ export namespace Faker {
             longitude: faker.location.longitude(),
           },
           features: [
-            faker.helpers.arrayElement([
-              'Entrega a domicilio',
-              'Para llevar',
-              'Reservaciones',
-              'Servicio en mesa',
-            ]),
+            'Entrega a domicilio',
+            'Para llevar',
+            'Reservaciones',
+            'Servicio en mesa',
           ],
 
           primaryPhone: faker.phone.number(),
@@ -56,6 +54,26 @@ export namespace Faker {
             },
           ],
           tags: [
+            {
+              id: faker.string.uuid(),
+              label: faker.lorem.word(),
+            },
+            {
+              id: faker.string.uuid(),
+              label: faker.lorem.word(),
+            },
+            {
+              id: faker.string.uuid(),
+              label: faker.lorem.word(),
+            },
+            {
+              id: faker.string.uuid(),
+              label: faker.lorem.word(),
+            },
+            {
+              id: faker.string.uuid(),
+              label: faker.lorem.word(),
+            },
             {
               id: faker.string.uuid(),
               label: faker.lorem.word(),

@@ -4,13 +4,7 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Feather from 'react-native-vector-icons/Feather';
 import useBusinessState from '@hooks/useBusinessState';
-
-const featureIcon = {
-  'Entrega a domicilio': 'truck',
-  'Para llevar': 'shopping-bag',
-  Reservaciones: 'book-open',
-  'Servicio en mesa': 'coffee',
-};
+import {Constan} from '@utils/contants';
 
 const ArtifactItem = ({
   item,
@@ -47,7 +41,7 @@ const ArtifactItem = ({
           </Text>
         </View>
         <View style={styles.features}>
-          {Object.keys(featureIcon).map((feature, index) => (
+          {Object.keys(Constan.featureIcon).map((feature, index) => (
             <View
               style={
                 item.features.includes(feature as Types.Feature)
@@ -56,7 +50,7 @@ const ArtifactItem = ({
               }>
               <Feather
                 key={index}
-                name={featureIcon[feature as Types.Feature]}
+                name={Constan.featureIcon[feature as Types.Feature]}
                 size={14}
                 color="white"
               />
