@@ -11,7 +11,7 @@ import {
 
 type ImageGridProps = {
   images: string[];
-  onSeeMorePress: (images: string[]) => void;
+  onSeeMorePress?: (images: string[]) => void;
 };
 
 const ImageGrid: React.FC<ImageGridProps> = ({images, onSeeMorePress}) => {
@@ -35,9 +35,12 @@ const ImageGrid: React.FC<ImageGridProps> = ({images, onSeeMorePress}) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Images</Text>
-        <TouchableOpacity onPress={() => onSeeMorePress(images)}>
-          <Text style={styles.seeMoreText}>See More</Text>
-        </TouchableOpacity>
+
+        {onSeeMorePress && (
+          <TouchableOpacity onPress={() => onSeeMorePress(images)}>
+            <Text style={styles.seeMoreText}>See More</Text>
+          </TouchableOpacity>
+        )}
       </View>
       <FlatList
         data={imagesToShow}

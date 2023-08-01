@@ -51,8 +51,12 @@ const ListScreen: React.FC<Props> = ({navigation}) => {
     });
   }, [fetchArtifacts]);
 
-  const renderItem = ({item}: {item: Types.Artifact; index: number}) => (
-    <ArtifactItem item={item} key={item.id} onPress={handleOnItemPress} />
+  const renderItem = ({item, index}: {item: Types.Artifact; index: number}) => (
+    <ArtifactItem
+      item={item}
+      key={`${item.id}-${index}`}
+      onPress={handleOnItemPress}
+    />
   );
 
   const keyExtractor = (item: Types.Artifact) => item.id.toString();

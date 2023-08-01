@@ -16,6 +16,7 @@
     "LocationWhenInUse"
   ],
   "dependencies": {
+    "@react-native-clipboard/clipboard": "^1.11.2",
     "@react-native-community/geolocation": "^3.0.6",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/stack": "^6.3.17",
@@ -33,7 +34,11 @@
     "react-native-screens": "^3.22.1",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-vector-icons": "^10.0.0",
-    "react-redux": "^8.1.1"
+    "react-redux": "^8.1.1",
+    "@gluestack-style/react": "latest",
+    "@gluestack-ui/provider": "latest",
+    "@gluestack-style/animation-plugin": "latest",
+    "@gluestack-ui/toast": "latest"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -53,7 +58,10 @@
     "pod-install": "0.1.38",
     "prettier": "^2.4.1",
     "react-test-renderer": "18.2.0",
-    "typescript": "4.8.4"
+    "typescript": "4.8.4",
+    "react-native-web": "^0.18.12",
+    "react-native": "^0.70.7",
+    "@types/react-native": "^0.71.6"
   },
   "engines": {
     "node": ">=16"
