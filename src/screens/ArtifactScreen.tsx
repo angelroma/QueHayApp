@@ -164,7 +164,7 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Features</Text>
           {Object.keys(Constan.featureIcon).map((feature, index) => (
-            <View style={styles.featureItemContainer}>
+            <View style={styles.featureItemContainer} key={index}>
               <View
                 style={
                   artifact.features.includes(feature as Types.Feature)

@@ -89,8 +89,20 @@ export namespace Types {
       };
     };
 
+    export type AuthStackParamList = {
+      Login: undefined;
+      Register: undefined;
+    };
+
+    export type AccountStackParamList = {
+      Account: undefined;
+    };
+
     export type RootStackParamList = {
       Main: NavigatorScreenParams<MainStackParamList>;
+      Account: NavigatorScreenParams<
+        AccountStackParamList | AuthStackParamList
+      >;
     };
   }
 }
