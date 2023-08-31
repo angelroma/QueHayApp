@@ -43,6 +43,7 @@ const ArtifactItem = ({
         <View style={styles.features}>
           {Object.keys(Constan.featureIcon).map((feature, index) => (
             <View
+              key={index}
               style={
                 item.features.includes(feature as Types.Feature)
                   ? styles.iconContainer

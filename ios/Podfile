@@ -5,6 +5,9 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
+$RNFirebaseAsStaticFramework = true 
+$RNFirebaseAnalyticsWithoutAdIdSupport = true
+
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
@@ -26,6 +29,13 @@ if linkage != nil
 end
 
 target 'QueHayApp' do
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'FirebaseCoreExtension', :modular_headers => true
+  pod 'FirebaseInstallations', :modular_headers => true
+  pod 'GoogleDataTransport', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'nanopb', :modular_headers => true  
+  
   config = use_native_modules!
 
   # Flags change depending on the env values.

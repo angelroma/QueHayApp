@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1028363605727",
+    "firebase_url": "https://quehay-30dda-default-rtdb.firebaseio.com",
+    "project_id": "quehay-30dda",
+    "storage_bucket": "quehay-30dda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028363605727:android:fb6696023eafa0ba20fb6a",
+        "android_client_info": {
+          "package_name": "com.quehayapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1028363605727-smefdbv1tvj4foj65nn1fdt3g3bae3f2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6VxLs3vBg3O-nMyDm5DdyFKO1UWjKOGE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1028363605727-smefdbv1tvj4foj65nn1fdt3g3bae3f2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1028363605727-k0g0id4j7ls2uqmlq9o0q5b8dq1q4d7q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.queHayApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
