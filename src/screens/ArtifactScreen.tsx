@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import {Faker} from '@utils/faker';
 import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '@navigation/Stacks';
 import Feather from 'react-native-vector-icons/Feather';
 import ImageGrid from '@components/ImageGrid';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -18,7 +17,7 @@ import {Toast, useToast} from '@components/core/';
 import {Constan} from '@utils/contants';
 import {Types} from '@utils/types';
 
-type Props = StackScreenProps<RootStackParamList, 'Artifact'>;
+type Props = StackScreenProps<Types.Navigation.MainStackParamList, 'Artifact'>;
 
 const ArtifactScreen: React.FC<Props> = ({}) => {
   const artifacts = Faker.Artifact.create(1);
@@ -216,10 +215,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   featureText: {
-    fontSize: 15, // increase the font size for better readability
+    fontSize: 15,
   },
   sectionTitle: {
-    fontSize: 20, // increase the font size for better readability
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#000000',
     paddingLeft: 10,
@@ -228,13 +227,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#f0f0f0',
-    padding: 15, // increase the padding for larger touch area
-    borderRadius: 10,
+    padding: 15,
     marginHorizontal: 5,
   },
   buttonText: {
     color: '#FFFFFF',
-    fontSize: 20, // increase the font size for better readability
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -252,15 +250,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     padding: 10,
     borderRadius: 10,
+    justifyContent: 'center',
   },
   button: {
-    backgroundColor: '#4E9BDE', // choose a noticeable color, light blue in this case
-    paddingVertical: 10, // increase padding for larger touch area
-    paddingHorizontal: 20, // increase padding for larger touch area
-    borderRadius: 5, // round the corners for a softer look
-    marginTop: 10, // add some margin at the top for space
-    marginBottom: 20, // add some margin at the bottom for space
-    shadowColor: '#000', // adding shadow
+    backgroundColor: 'black',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 10,
+    marginBottom: 20,
+    shadowColor: '#000',
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.2,
     shadowRadius: 1,
@@ -271,16 +270,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0', // light gray border color
+    borderBottomColor: '#f0f0f0',
   },
   sectionContent: {
     fontSize: 16,
-    color: '#333333', // darker gray for better contrast
-    marginLeft: 10, // give some space between the icon and the text
+    color: '#333333',
+    marginLeft: 10,
   },
   socialMediaContainer: {
     flexDirection: 'row',
-    marginTop: 20, // some space above the social media icons
+    marginTop: 20,
   },
   socialMediaButton: {
     marginRight: 15,
@@ -293,7 +292,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     marginTop: 10,
-    color: '#000000', // black text for higher contrast
+    color: '#000000',
   },
   image: {
     height: 220,
@@ -303,11 +302,11 @@ const styles = StyleSheet.create({
   description: {
     marginVertical: 15,
     fontSize: 16,
-    color: '#333333', // darker gray for better contrast
+    color: '#333333',
   },
   userInteractionText: {
     fontSize: 16,
-    color: '#000000', // black text for better contrast
+    color: '#000000',
     marginHorizontal: 5,
     marginLeft: 5,
   },
@@ -315,15 +314,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginVertical: 15,
-    color: '#000000', // black text for better contrast
+    color: '#000000',
   },
   tagText: {
     fontSize: 14,
-    color: '#000000', // black text for better contrast
+    color: '#000000',
   },
   hoursText: {
     fontSize: 16,
-    color: '#333333', // darker gray for better contrast
+    color: '#333333',
     marginVertical: 5,
   },
   header: {
@@ -333,7 +332,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
-    width: '100%', // to ensure the container takes up all available space
+    width: '100%',
   },
   tagContainer: {
     marginRight: 10,

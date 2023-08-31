@@ -1,3 +1,5 @@
+import {NavigatorScreenParams} from '@react-navigation/native';
+
 export namespace Types {
   export interface OperatingHours {
     day: string;
@@ -71,5 +73,24 @@ export namespace Types {
     hoursOfOperation: OperationHours[];
     userInteractions: UserInteraction;
     category: string;
+  }
+
+  export namespace Navigation {
+    export type MainStackParamList = {
+      Search: undefined;
+      List: {
+        term?: string;
+      };
+      Artifact: {
+        id: string;
+      };
+      ImageListScreen: {
+        images: string[];
+      };
+    };
+
+    export type RootStackParamList = {
+      Main: NavigatorScreenParams<MainStackParamList>;
+    };
   }
 }

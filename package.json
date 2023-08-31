@@ -16,8 +16,13 @@
     "LocationWhenInUse"
   ],
   "dependencies": {
+    "@gluestack-style/animation-plugin": "latest",
+    "@gluestack-style/react": "latest",
+    "@gluestack-ui/provider": "latest",
+    "@gluestack-ui/toast": "latest",
     "@react-native-clipboard/clipboard": "^1.11.2",
     "@react-native-community/geolocation": "^3.0.6",
+    "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/stack": "^6.3.17",
     "@reduxjs/toolkit": "^1.9.5",
@@ -34,11 +39,7 @@
     "react-native-screens": "^3.22.1",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-vector-icons": "^10.0.0",
-    "react-redux": "^8.1.1",
-    "@gluestack-style/react": "latest",
-    "@gluestack-ui/provider": "latest",
-    "@gluestack-style/animation-plugin": "latest",
-    "@gluestack-ui/toast": "latest"
+    "react-redux": "^8.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -49,6 +50,7 @@
     "@react-native/metro-config": "^0.72.9",
     "@tsconfig/react-native": "^3.0.0",
     "@types/react": "^18.0.24",
+    "@types/react-native": "^0.71.6",
     "@types/react-native-vector-icons": "^6.4.13",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.2.1",
@@ -57,11 +59,10 @@
     "metro-react-native-babel-preset": "0.76.7",
     "pod-install": "0.1.38",
     "prettier": "^2.4.1",
-    "react-test-renderer": "18.2.0",
-    "typescript": "4.8.4",
-    "react-native-web": "^0.18.12",
     "react-native": "^0.70.7",
-    "@types/react-native": "^0.71.6"
+    "react-native-web": "^0.18.12",
+    "react-test-renderer": "18.2.0",
+    "typescript": "4.8.4"
   },
   "engines": {
     "node": ">=16"

@@ -1,61 +1,123 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, FlatList, SafeAreaView} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import {HeaderBackButton} from '@react-navigation/elements';
-import {RootStackParamList} from '@navigation/Stacks';
 import {StackScreenProps} from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/Feather';
+import {Types} from '@utils/types';
 
-type Props = StackScreenProps<RootStackParamList, 'Search'>;
+const SEARCH_ICON_SIZE = 30;
+const CHEVRON_ICON_SIZE = 30;
+const INPUT_HEIGHT = 40;
+const INPUT_BORDER_RADIUS = 18;
+const INPUT_PADDING_HORIZONTAL = 10;
+const ITEM_PADDING = 10;
+const ITEM_MARGIN_VERTICAL = 8;
 
-export default function SearchScreen({navigation}: Props) {
-  const [term, setTerm] = useState(''); // state for search input
+type Props = StackScreenProps<Types.Navigation.MainStackParamList, 'Search'>;
 
-  // mock data array
+const SearchScreen: React.FC<Props> = ({navigation}) => {
+  const [term, setTerm] = useState('');
+
   const data = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
 
-  // filtering data based on search input
   const filteredData = data.filter(item =>
     item.toLowerCase().includes(term.toLowerCase()),
   );
 
-  const renderItem = ({item}) => <Text>{item}</Text>;
+  const renderItem = ({item}: {item: string}) => (
+    <TouchableOpacity
+      style={styles.item}
+      onPress={() => {
+        navigation.push('List', {
+          term: item,
+        });
+      }}>
+      <View style={styles.rowCenter}>
+        <Icon
+          name="search"
+          size={SEARCH_ICON_SIZE}
+          color="black"
+          style={styles.iconMargin}
+        />
+        <Text>{item}</Text>
+      </View>
+      <Icon name="chevron-right" size={CHEVRON_ICON_SIZE} color="black" />
+    </TouchableOpacity>
+  );
 
   return (
-    <SafeAreaView
-      style={{
-        backgroundColor: 'white',
-      }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingRight: 10,
-          paddingTop: 10,
-        }}>
+    <SafeAreaView style={styles.safeAreaView}>
+      <View style={styles.header}>
         <HeaderBackButton onPress={() => navigation.goBack()} />
         <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1, flex: 1}}
-          onChangeText={text => setTerm(text)}
+          style={styles.textInput}
+          onChangeText={setTerm}
           value={term}
           placeholder="Search here"
-          autoFocus={true}
-          enablesReturnKeyAutomatically={true}
+          autoFocus
+          enablesReturnKeyAutomatically
           returnKeyType="search"
           keyboardType="default"
           onSubmitEditing={() => {
-            if (term.length === 0) return;
-            navigation.push('List', {
-              term: term,
-            });
+            if (term.length === 0) {
+              return;
+            }
+            navigation.push('List', {term});
           }}
+          clearButtonMode="while-editing"
         />
       </View>
-
       <FlatList
         data={filteredData}
         keyExtractor={item => item}
-        renderItem={renderItem}
+        renderItem={({item}) => renderItem({item})}
       />
     </SafeAreaView>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  safeAreaView: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingRight: 10,
+    paddingTop: 10,
+  },
+  textInput: {
+    height: INPUT_HEIGHT,
+    borderColor: 'gray',
+    flex: 1,
+    borderRadius: INPUT_BORDER_RADIUS,
+    paddingHorizontal: INPUT_PADDING_HORIZONTAL,
+    backgroundColor: '#f2f2f2',
+  },
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: ITEM_PADDING,
+    marginVertical: ITEM_MARGIN_VERTICAL,
+  },
+  rowCenter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  iconMargin: {
+    marginRight: 10,
+  },
+});
+
+export default SearchScreen;

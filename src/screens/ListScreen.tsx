@@ -1,7 +1,6 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {ActivityIndicator, View, StyleSheet} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '@navigation/Stacks';
 import ArtifactItem from '@components/ArtifactItem';
 import {FlashList} from '@shopify/flash-list';
 import {Types} from '@utils/types';
@@ -11,7 +10,7 @@ const ON_END_REACHED_THRESHOLD = 0.5;
 const ESTIMATED_ITEM_SIZE = 300;
 const ITEMS_PER_PAGE = 20;
 
-type Props = StackScreenProps<RootStackParamList, 'List'>;
+type Props = StackScreenProps<Types.Navigation.MainStackParamList, 'List'>;
 
 const ListScreen: React.FC<Props> = ({navigation}) => {
   const [artifacts, setArtifacts] = useState<Types.Artifact[]>([]);
