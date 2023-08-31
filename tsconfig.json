@@ -12,7 +12,8 @@
       "@navigation/*": ["navigation/*"],
       "@screens/*": ["screens/*"],
       "@utils/*": ["utils/*"],
-      "@hooks/*": ["hooks/*"]
+      "@hooks/*": ["hooks/*"],
+      "@assets/*": ["assets/*"],
     }
   },
   "exclude": [

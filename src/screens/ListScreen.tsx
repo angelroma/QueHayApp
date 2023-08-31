@@ -1,5 +1,11 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {ActivityIndicator, View, StyleSheet} from 'react-native';
+import {
+  ActivityIndicator,
+  View,
+  StyleSheet,
+  Text,
+  Animated,
+} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import ArtifactItem from '@components/ArtifactItem';
 import {FlashList} from '@shopify/flash-list';
@@ -15,6 +21,9 @@ type Props = StackScreenProps<Types.Navigation.MainStackParamList, 'List'>;
 const ListScreen: React.FC<Props> = ({navigation}) => {
   const [artifacts, setArtifacts] = useState<Types.Artifact[]>([]);
   const [loading, setLoading] = useState(false);
+  const scrollY = new Animated.Value(0);
+  const prevScrollY = new Animated.Value(0);
+  const isScrollingUp = new Animated.Value(1);
 
   const fetchArtifacts = useCallback(async ({page}: {page: number}) => {
     setLoading(true);
@@ -39,7 +48,7 @@ const ListScreen: React.FC<Props> = ({navigation}) => {
   }, [artifacts, fetchArtifacts]);
 
   const handleOnItemPress = useCallback(
-    (item: Types.Artifact) => navigation.navigate('Artifact', {id: item.id}),
+    (item: Types.Artifact) => navigation.push('Artifact', {id: item.id}),
     [navigation],
   );
 
@@ -60,8 +69,54 @@ const ListScreen: React.FC<Props> = ({navigation}) => {
 
   const keyExtractor = (item: Types.Artifact) => item.id.toString();
 
+  const handleScroll = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: {y: scrollY},
+        },
+      },
+    ],
+    {
+      listener: event => {
+        // @ts-ignore
+        const currentScrollY = event.nativeEvent.contentOffset.y;
+        if (currentScrollY <= 0) {
+          isScrollingUp.setValue(1);
+        } else {
+          // @ts-ignore
+          isScrollingUp.setValue(currentScrollY < prevScrollY._value ? 1 : 0);
+        }
+        prevScrollY.setValue(currentScrollY);
+      },
+      useNativeDriver: false,
+    },
+  );
+
+  const headerHeight = isScrollingUp.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 50],
+  });
+
+  const headerOpacity = isScrollingUp.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  });
+
   return (
     <View style={styles.container}>
+      <Animated.View
+        style={[
+          styles.header,
+          {
+            height: headerHeight,
+            opacity: headerOpacity,
+          },
+        ]}>
+        <Text numberOfLines={1}>
+          Nino Jesus 26, San Matias Tlalancaleca, Puebla, Mexico, 74110
+        </Text>
+      </Animated.View>
       <FlashList
         data={artifacts}
         renderItem={renderItem}
@@ -74,6 +129,8 @@ const ListScreen: React.FC<Props> = ({navigation}) => {
         ListFooterComponent={
           loading ? <ActivityIndicator style={styles.footer} /> : undefined
         }
+        onScroll={handleScroll}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
@@ -86,6 +143,15 @@ const styles = StyleSheet.create({
   footer: {
     alignSelf: 'center',
     margin: 20,
+  },
+  header: {
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    position: 'absolute',
+    top: 0,
+    zIndex: 1,
+    width: '100%',
   },
 });
 

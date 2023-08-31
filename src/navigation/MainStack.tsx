@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   CardStyleInterpolators,
+  StackNavigationOptions,
   createStackNavigator,
 } from '@react-navigation/stack';
 import ArtifactScreen from '@screens/ArtifactScreen';
@@ -9,10 +10,17 @@ import ListScreen from '@screens/ListScreen';
 import SearchScreen from '@screens/SearchScreen';
 import HeaderRight from '../components/HeaderRight';
 import {Types} from '@utils/types';
+import {RouteProp} from '@react-navigation/native';
 
 const horizontalCardStyleInterpolator = CardStyleInterpolators.forHorizontalIOS;
 
-const ListScreenOptions = ({route}: {route: any}) => ({
+const ListScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<Types.Navigation.MainStackParamList, 'List'>;
+      navigation: any;
+    }) => StackNavigationOptions)
+  | undefined = ({route}: {route: any}) => ({
   title: route.params && route.params.term ? route.params.term : 'List',
 });
 
