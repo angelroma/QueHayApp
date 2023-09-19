@@ -1,10 +1,10 @@
-import {Types} from '@utils/types';
+import {Types} from '@shared/utils/types';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Feather from 'react-native-vector-icons/Feather';
-import useBusinessState from '@hooks/useBusinessState';
-import {Constan} from '@utils/contants';
+import useBusinessState from '../../../shared/hooks/useBusinessState';
+import {Constan} from '@shared/utils/contants';
 
 const ArtifactItem = ({
   item,

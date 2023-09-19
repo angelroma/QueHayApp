@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Types} from '@utils/types';
+import {Types} from '../utils/types';
 
 const useBusinessState = (hoursOfOperation: Types.OperationHours[]) => {
   const [state, setState] = useState('Closed now');

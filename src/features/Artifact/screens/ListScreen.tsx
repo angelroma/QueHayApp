@@ -7,10 +7,10 @@ import {
   Animated,
 } from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
-import ArtifactItem from '@components/ArtifactItem';
+import ArtifactItem from '../components/ArtifactItem';
 import {FlashList} from '@shopify/flash-list';
-import {Types} from '@utils/types';
-import {Faker} from '@utils/faker';
+import {Types} from '@shared/utils/types';
+import {Faker} from '@shared/utils/faker';
 
 const ON_END_REACHED_THRESHOLD = 0.5;
 const ESTIMATED_ITEM_SIZE = 300;

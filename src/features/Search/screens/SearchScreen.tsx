@@ -11,7 +11,7 @@ import {
 import {HeaderBackButton} from '@react-navigation/elements';
 import {StackScreenProps} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Feather';
-import {Types} from '@utils/types';
+import {Types} from '@shared/utils/types';
 
 const SEARCH_ICON_SIZE = 30;
 const CHEVRON_ICON_SIZE = 30;

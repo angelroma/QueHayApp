@@ -20,8 +20,14 @@ export namespace Types {
     | 'Reservaciones'
     | 'Servicio en mesa';
 
+  export type SocialMediaPlatform =
+    | 'Facebook'
+    | 'Twitter'
+    | 'Instagram'
+    | 'LinkedIn';
+
   export interface SocialMedia {
-    platform: string;
+    platform: SocialMediaPlatform;
     handle: string;
   }
 
@@ -72,7 +78,7 @@ export namespace Types {
     tags: Tag[];
     hoursOfOperation: OperationHours[];
     userInteractions: UserInteraction;
-    category: string;
+    category: Category;
   }
 
   export namespace Navigation {

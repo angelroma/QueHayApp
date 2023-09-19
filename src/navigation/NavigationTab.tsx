@@ -7,7 +7,7 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import MainStack from './MainStack';
-import {Types} from '@utils/types';
+import {Types} from '@shared/utils/types';
 import AccountStack from './AccountStack';
 import AuthStack from './AuthStack';
 

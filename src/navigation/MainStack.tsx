@@ -4,12 +4,12 @@ import {
   StackNavigationOptions,
   createStackNavigator,
 } from '@react-navigation/stack';
-import ArtifactScreen from '@screens/ArtifactScreen';
-import ImageListScreen from '@screens/ImageListScreen';
-import ListScreen from '@screens/ListScreen';
-import SearchScreen from '@screens/SearchScreen';
-import HeaderRight from '../components/HeaderRight';
-import {Types} from '@utils/types';
+import ArtifactScreen from '../features/Artifact/screens/ArtifactScreen';
+import ImageListScreen from '../features/Artifact/screens/ImageListScreen';
+import ListScreen from '../features/Artifact/screens/ListScreen';
+import SearchScreen from '../features/Search/screens/SearchScreen';
+import HeaderRight from './components/HeaderRight';
+import {Types} from '@shared/utils/types';
 import {RouteProp} from '@react-navigation/native';
 
 const horizontalCardStyleInterpolator = CardStyleInterpolators.forHorizontalIOS;
@@ -42,6 +42,7 @@ export default function MainStack() {
   return (
     <Stack.Navigator
       screenOptions={({navigation}) => ({
+        // eslint-disable-next-line react/no-unstable-nested-components
         headerRight: () => <HeaderRight navigation={navigation} />,
         headerBackTitleVisible: false,
         cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,

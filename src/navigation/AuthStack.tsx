@@ -1,8 +1,8 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Types} from '@utils/types';
-import LoginScreen from '@screens/LoginScreen';
-import RegisterScreen from '@screens/RegisterScreen';
+import {Types} from '@shared/utils/types';
+import LoginScreen from 'features/Auth/screens/LoginScreen';
+import RegisterScreen from '../features/Auth/screens/RegisterScreen';
 
 const Stack = createStackNavigator<Types.Navigation.AuthStackParamList>();
 

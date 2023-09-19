@@ -8,12 +8,10 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "baseUrl": "src",
     "paths": {
-      "@components/*": ["components/*"],
       "@navigation/*": ["navigation/*"],
-      "@screens/*": ["screens/*"],
-      "@utils/*": ["utils/*"],
-      "@hooks/*": ["hooks/*"],
       "@assets/*": ["assets/*"],
+      "@features/*": ["features/*"],
+      "@shared/*": ["shared/*"],
     }
   },
   "exclude": [

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import NavigationTab from '@navigation/NavigationTab';
-import {GluestackUIProvider} from '@components/core/GluestackUIProvider';
-import {config} from './gluestack-ui.config';
+import {config, GluestackUIProvider} from '@gluestack-ui/themed';
 
 export default function App() {
   return (

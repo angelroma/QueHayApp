@@ -8,14 +8,14 @@ import {
   Linking,
   TouchableOpacity,
 } from 'react-native';
-import {Faker} from '@utils/faker';
+import {Faker} from '@shared/utils/faker';
 import {StackScreenProps} from '@react-navigation/stack';
 import Feather from 'react-native-vector-icons/Feather';
-import ImageGrid from '@components/ImageGrid';
+import ImageGrid from '../components/ImageGrid';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {Toast, useToast} from '@components/core/';
-import {Constan} from '@utils/contants';
-import {Types} from '@utils/types';
+import {Toast, useToast} from '@gluestack-ui/themed';
+import {Constan} from '@shared//utils/contants';
+import {Types} from '@shared//utils/types';
 
 type Props = StackScreenProps<Types.Navigation.MainStackParamList, 'Artifact'>;
 
