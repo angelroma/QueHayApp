@@ -9,17 +9,18 @@ import {
 import {StackScreenProps} from '@react-navigation/stack';
 import ArtifactItem from '../components/ArtifactItem';
 import {FlashList} from '@shopify/flash-list';
-import {Types} from '@shared/utils/types';
-import {Faker} from '@shared/utils/faker';
+import * as NavigationTypes from '@navigation/types';
+import * as ArtifactTypes from '@features/Artifact/types';
+import * as ArtifactMock from '@features/Artifact/mock';
 
 const ON_END_REACHED_THRESHOLD = 0.5;
 const ESTIMATED_ITEM_SIZE = 300;
 const ITEMS_PER_PAGE = 20;
 
-type Props = StackScreenProps<Types.Navigation.MainStackParamList, 'List'>;
+type Props = StackScreenProps<NavigationTypes.MainStackParamList, 'List'>;
 
 const ListScreen: React.FC<Props> = ({navigation}) => {
-  const [artifacts, setArtifacts] = useState<Types.Artifact[]>([]);
+  const [artifacts, setArtifacts] = useState<ArtifactTypes.Artifact[]>([]);
   const [loading, setLoading] = useState(false);
   const scrollY = new Animated.Value(0);
   const prevScrollY = new Animated.Value(0);
@@ -27,7 +28,7 @@ const ListScreen: React.FC<Props> = ({navigation}) => {
 
   const fetchArtifacts = useCallback(async ({page}: {page: number}) => {
     setLoading(true);
-    const newArtifacts = await Faker.Artifact.create(ITEMS_PER_PAGE * page);
+    const newArtifacts = await ArtifactMock.create(ITEMS_PER_PAGE * page);
     setArtifacts(prevArtifacts => [
       ...prevArtifacts.slice(-ITEMS_PER_PAGE * (page - 1)),
       ...newArtifacts,
@@ -48,7 +49,8 @@ const ListScreen: React.FC<Props> = ({navigation}) => {
   }, [artifacts, fetchArtifacts]);
 
   const handleOnItemPress = useCallback(
-    (item: Types.Artifact) => navigation.push('Artifact', {id: item.id}),
+    (item: ArtifactTypes.Artifact) =>
+      navigation.push('Artifact', {id: item.id}),
     [navigation],
   );
 
@@ -59,7 +61,13 @@ const ListScreen: React.FC<Props> = ({navigation}) => {
     });
   }, [fetchArtifacts]);
 
-  const renderItem = ({item, index}: {item: Types.Artifact; index: number}) => (
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: ArtifactTypes.Artifact;
+    index: number;
+  }) => (
     <ArtifactItem
       item={item}
       key={`${item.id}-${index}`}
@@ -67,7 +75,7 @@ const ListScreen: React.FC<Props> = ({navigation}) => {
     />
   );
 
-  const keyExtractor = (item: Types.Artifact) => item.id.toString();
+  const keyExtractor = (item: ArtifactTypes.Artifact) => item.id.toString();
 
   const handleScroll = Animated.event(
     [

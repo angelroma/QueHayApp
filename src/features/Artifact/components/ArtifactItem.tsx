@@ -1,17 +1,17 @@
-import {Types} from '@shared/utils/types';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import Feather from 'react-native-vector-icons/Feather';
+import {Map} from 'lucide-react-native';
 import useBusinessState from '../../../shared/hooks/useBusinessState';
-import {Constan} from '@shared/utils/contants';
+import Constant from '@shared/contants';
+import {Artifact, Feature} from '@features/Artifact/types';
 
 const ArtifactItem = ({
   item,
   onPress,
 }: {
-  item: Types.Artifact;
-  onPress?: (item: Types.Artifact) => void;
+  item: Artifact;
+  onPress?: (item: Artifact) => void;
 }) => {
   const businessState = useBusinessState(item.hoursOfOperation);
 
@@ -35,23 +35,23 @@ const ArtifactItem = ({
           {item.description}
         </Text>
         <View style={styles.addressContainer}>
-          <Feather name="map-pin" size={14} color="#666" />
+          <Map name="map-pin" size={14} color="#666" />
           <Text style={styles.address} numberOfLines={1}>
             {item.address.street}
           </Text>
         </View>
         <View style={styles.features}>
-          {Object.keys(Constan.featureIcon).map((feature, index) => (
+          {Object.keys(Constant.FeatureIcon).map((feature, index) => (
             <View
               key={index}
               style={
-                item.features.includes(feature as Types.Feature)
+                item.features.includes(feature as Feature)
                   ? styles.iconContainer
                   : styles.iconContainerDisabled
               }>
-              <Feather
+              <Map
                 key={index}
-                name={Constan.featureIcon[feature as Types.Feature]}
+                name={Constant.FeatureIcon[feature as Feature]}
                 size={14}
                 color="white"
               />

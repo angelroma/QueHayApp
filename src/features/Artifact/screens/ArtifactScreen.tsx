@@ -8,39 +8,38 @@ import {
   Linking,
   TouchableOpacity,
 } from 'react-native';
-import {Faker} from '@shared/utils/faker';
 import {StackScreenProps} from '@react-navigation/stack';
-import Feather from 'react-native-vector-icons/Feather';
 import ImageGrid from '../components/ImageGrid';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {Toast, useToast} from '@gluestack-ui/themed';
-import {Constan} from '@shared//utils/contants';
-import {Types} from '@shared//utils/types';
+import {MainStackParamList} from '@navigation/types';
+import Constant from '@shared/contants';
+import * as ArtifactMock from '@features/Artifact/mock';
+import * as ArtifactTypes from '@features/Artifact/types';
 
-type Props = StackScreenProps<Types.Navigation.MainStackParamList, 'Artifact'>;
+type Props = StackScreenProps<MainStackParamList, 'Artifact'>;
 
 const ArtifactScreen: React.FC<Props> = ({}) => {
-  const artifacts = Faker.Artifact.create(1);
+  const artifacts = ArtifactMock.create(1);
   const artifact = artifacts[0];
 
-  const toast = useToast();
+  // const toast = useToast();
 
   const handleCopy = (text?: string) => {
     if (!text) {
       return;
     }
     Clipboard.setString(text);
-    toast.show({
-      placement: 'bottom',
-      render: ({id}) => {
-        return (
-          // @ts-ignore
-          <Toast nativeId={id}>
-            <Toast.Description>Copiado</Toast.Description>
-          </Toast>
-        );
-      },
-    });
+    // toast.show({
+    //   placement: 'bottom',
+    //   render: ({id}) => {
+    //     return (
+    //       // @ts-ignore
+    //       // <Toast nativeId={id}>
+    //       //   <Toast.Description>Copiado</Toast.Description>
+    //       // </Toast>
+    //     );
+    //   },
+    // });
   };
 
   const handleUserInteraction = (type: 'like' | 'dislike') => {
@@ -68,11 +67,11 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
             <TouchableOpacity
               style={styles.interactionButton}
               onPress={() => handleUserInteraction('like')}>
-              <Feather
+              {/* <Feather
                 name={'thumbs-up'}
                 size={20}
                 color={true ? '#4E9BDE' : 'gray'}
-              />
+              /> */}
               <Text style={styles.userInteractionText}>
                 {artifact.userInteractions.likes}
               </Text>
@@ -81,12 +80,12 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
             <TouchableOpacity
               style={styles.interactionButton}
               onPress={() => handleUserInteraction('dislike')}>
-              <Feather name={'thumbs-down'} size={20} color={'gray'} />
+              {/* <Feather name={'thumbs-down'} size={20} color={'gray'} /> */}
             </TouchableOpacity>
           </View>
 
           <TouchableOpacity style={styles.shareButton} onPress={() => {}}>
-            <Feather name={'share-2'} size={20} color={'gray'} />
+            {/* <Feather name={'share-2'} size={20} color={'gray'} /> */}
           </TouchableOpacity>
         </View>
 
@@ -96,7 +95,7 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
 
           {/* For Phone Number */}
           <View style={styles.contactItem}>
-            <Feather name="phone" size={14} color="#666" />
+            {/* <Feather name="phone" size={14} color="#666" /> */}
             <Text
               style={styles.sectionContent}
               onPress={() => handleCopy(artifact.primaryPhone)}>
@@ -106,7 +105,7 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
 
           {/*  Email */}
           <View style={styles.contactItem}>
-            <Feather name="mail" size={14} color="#666" />
+            {/* <Feather name="mail" size={14} color="#666" /> */}
             <Text
               style={styles.sectionContent}
               onPress={() => handleCopy(artifact.email)}>
@@ -116,7 +115,7 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
 
           {/* Address */}
           <View style={styles.contactItem}>
-            <Feather name="map-pin" size={14} color="#666" />
+            {/* <Feather name="map-pin" size={14} color="#666" /> */}
             <Text
               style={styles.sectionContent}
               onPress={() => handleCopy(artifact.address.street)}>
@@ -134,11 +133,11 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
                     `https://${socialMedia.platform}.com/${socialMedia.handle}`,
                   )
                 }>
-                <Feather
+                {/* <Feather
                   name={socialMedia.platform.toLowerCase()}
                   size={20}
                   color="#888"
-                />
+                /> */}
               </TouchableOpacity>
             ))}
           </View>
@@ -163,22 +162,22 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
         {/* Features */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Features</Text>
-          {Object.keys(Constan.featureIcon).map((feature, index) => (
+          {Object.keys(Constant.FeatureIcon).map((value, index) => (
             <View style={styles.featureItemContainer} key={index}>
               <View
                 style={
-                  artifact.features.includes(feature as Types.Feature)
+                  artifact.features.includes(value as ArtifactTypes.Feature)
                     ? styles.iconContainer
                     : styles.iconContainerDisabled
                 }>
-                <Feather
+                {/* <Feather
                   key={index}
-                  name={Constan.featureIcon[feature as Types.Feature]}
+                  name={Constant.FeatureIcon[value as string]}
                   size={16}
                   color="white"
-                />
+                /> */}
               </View>
-              <Text style={styles.featureText}>{feature}</Text>
+              <Text style={styles.featureText}>{value}</Text>
             </View>
           ))}
         </View>
@@ -197,7 +196,9 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
           ))}
         </View>
 
-        <Text style={styles.categoryText}>Category: {artifact.category}</Text>
+        <Text style={styles.categoryText}>
+          Category: {artifact.category.name}
+        </Text>
         <View style={styles.feedbackContainer}>
           <TouchableOpacity>
             <Text style={styles.feedbackText}>Report</Text>

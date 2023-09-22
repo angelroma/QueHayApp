@@ -10,8 +10,7 @@ import {
 } from 'react-native';
 import {HeaderBackButton} from '@react-navigation/elements';
 import {StackScreenProps} from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/Feather';
-import {Types} from '@shared/utils/types';
+import {MainStackParamList} from '@navigation/types';
 
 const SEARCH_ICON_SIZE = 30;
 const CHEVRON_ICON_SIZE = 30;
@@ -21,7 +20,7 @@ const INPUT_PADDING_HORIZONTAL = 10;
 const ITEM_PADDING = 10;
 const ITEM_MARGIN_VERTICAL = 8;
 
-type Props = StackScreenProps<Types.Navigation.MainStackParamList, 'Search'>;
+type Props = StackScreenProps<MainStackParamList, 'Search'>;
 
 const SearchScreen: React.FC<Props> = ({navigation}) => {
   const [term, setTerm] = useState('');
@@ -41,15 +40,15 @@ const SearchScreen: React.FC<Props> = ({navigation}) => {
         });
       }}>
       <View style={styles.rowCenter}>
-        <Icon
+        {/* <Icon
           name="search"
           size={SEARCH_ICON_SIZE}
           color="black"
           style={styles.iconMargin}
-        />
+        /> */}
         <Text>{item}</Text>
       </View>
-      <Icon name="chevron-right" size={CHEVRON_ICON_SIZE} color="black" />
+      {/* <Icon name="chevron-right" size={CHEVRON_ICON_SIZE} color="black" /> */}
     </TouchableOpacity>
   );
 

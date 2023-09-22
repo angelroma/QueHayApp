@@ -2,12 +2,8 @@ apply plugin: "com.android.application"
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: "com.facebook.react"
-
-project.ext.vectoricons = [
-    iconFontNames: [ 'Feather.ttf' ]
-]
-
-apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle");
+// https://github.com/luggit/react-native-config#extra-step-for-android
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 /**
  * This is the configuration block to customize your React Native Android app.

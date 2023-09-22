@@ -9,7 +9,7 @@ import ImageListScreen from '../features/Artifact/screens/ImageListScreen';
 import ListScreen from '../features/Artifact/screens/ListScreen';
 import SearchScreen from '../features/Search/screens/SearchScreen';
 import HeaderRight from './components/HeaderRight';
-import {Types} from '@shared/utils/types';
+import {Types} from '@shared/types/types';
 import {RouteProp} from '@react-navigation/native';
 
 const horizontalCardStyleInterpolator = CardStyleInterpolators.forHorizontalIOS;

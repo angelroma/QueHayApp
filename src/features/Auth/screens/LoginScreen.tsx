@@ -10,30 +10,29 @@ import {
 } from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParamList} from '@navigation/types';
-import {Icon} from 'lucide-react-native';
 
-type Props = StackScreenProps<AuthStackParamList, 'Register'>;
+type Props = StackScreenProps<AuthStackParamList, 'Login'>;
 
-export default function RegisterScreen({navigation}: Props) {
+export default function LoginScreen({navigation}: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
-  const handleRegister = () => {
+  const handleLogin = () => {
     if (email === '' || password === '') {
       Alert.alert('Error', 'Please enter your email and password');
       return;
     }
 
-    // Handle registration logic here
+    // Handle login logic here
   };
 
-  const handleFacebookRegister = () => {
-    // Handle Facebook registration logic here
+  const handleFacebookLogin = () => {
+    // Handle Facebook login logic here
   };
 
-  const handleGoogleRegister = () => {
-    // Handle Google registration logic here
+  const handleGoogleLogin = () => {
+    // Handle Google login logic here
   };
 
   return (
@@ -63,8 +62,8 @@ export default function RegisterScreen({navigation}: Props) {
           /> */}
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
-        <Text style={styles.registerButtonText}>Sign Up</Text>
+      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+        <Text style={styles.loginButtonText}>Login</Text>
       </TouchableOpacity>
       <View style={styles.dividerContainer}>
         <View style={styles.divider} />
@@ -72,15 +71,13 @@ export default function RegisterScreen({navigation}: Props) {
         <View style={styles.divider} />
       </View>
       <View style={styles.socialIcons}>
-        <TouchableOpacity onPress={handleFacebookRegister}>
+        <TouchableOpacity onPress={handleFacebookLogin}>
           <Image
             source={require('@assets/icons8-facebook-48.png')}
             style={styles.logo}
           />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={handleGoogleRegister}
-          style={styles.googleIcon}>
+        <TouchableOpacity onPress={handleGoogleLogin} style={styles.googleIcon}>
           <Image
             source={require('@assets/icons8-google-48.png')}
             style={styles.logo}
@@ -88,8 +85,8 @@ export default function RegisterScreen({navigation}: Props) {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.loginLink}>Already have an account? Log in</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+        <Text style={styles.signUpLink}>Don't have an account? Sign up</Text>
       </TouchableOpacity>
     </View>
   );
@@ -122,13 +119,13 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderColor: '#E5E5E5',
   },
-  registerButton: {
+  loginButton: {
     backgroundColor: '#3498db',
     padding: 10,
     borderRadius: 5,
     marginBottom: 20,
   },
-  registerButtonText: {
+  loginButtonText: {
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
@@ -155,7 +152,7 @@ const styles = StyleSheet.create({
   googleIcon: {
     marginLeft: 10,
   },
-  loginLink: {
+  signUpLink: {
     color: '#3498db',
     textAlign: 'center',
   },
