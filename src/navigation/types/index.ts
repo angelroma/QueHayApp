@@ -19,7 +19,7 @@ export type AuthStackParamList = {
 };
 
 export type AccountStackParamList = {
-  Account: undefined;
+  AccountScreen: undefined;
 };
 
 export type SandboxStackParamList = {

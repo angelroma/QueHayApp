@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParamList} from '@navigation/types';
-import {Icon} from 'lucide-react-native';
 
 type Props = StackScreenProps<AuthStackParamList, 'Register'>;
 

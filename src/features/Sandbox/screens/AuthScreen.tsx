@@ -1,14 +1,12 @@
 import React, {useState} from 'react';
 import {Button, TextInput, View, Text, TouchableOpacity} from 'react-native';
 import {SandboxStackParamList} from '@navigation/types';
-import {supabase} from '@shared/api/client';
-import {SignUpWithPasswordCredentials, User} from '@supabase/supabase-js';
 import {StackScreenProps} from '@react-navigation/stack';
 
 type Props = StackScreenProps<SandboxStackParamList, 'Authentication'>;
 
 export default function AuthenticationScreen({}: Props) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<any | null>(null);
   const [email, setEmail] = useState<string>('angelr10mar@gmail.com');
   const [password, setPassword] = useState<string>('Mente!0Unica');
   const [loading, setLoading] = useState<boolean>(false);
@@ -29,12 +27,6 @@ export default function AuthenticationScreen({}: Props) {
 
   const handleOnSignUp = async () => {
     try {
-      const singup: SignUpWithPasswordCredentials = {
-        email: email,
-        password: password,
-      };
-      const {error} = await supabase.auth.signUp(singup);
-      if (error) throw error;
     } catch (caughtError) {
       handleCaughtError(caughtError);
     }
@@ -43,11 +35,6 @@ export default function AuthenticationScreen({}: Props) {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const {error} = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) throw error;
     } catch (caughtError) {
       handleCaughtError(caughtError);
     } finally {
@@ -57,8 +44,6 @@ export default function AuthenticationScreen({}: Props) {
 
   const handleOnGetUser = async () => {
     try {
-      const {data} = await supabase.auth.getUser();
-      setUser(data?.user || null);
     } catch (caughtError) {
       handleCaughtError(caughtError);
     }
@@ -66,8 +51,6 @@ export default function AuthenticationScreen({}: Props) {
 
   const handleOnSignOut = async () => {
     try {
-      await supabase.auth.signOut();
-      setUser(null);
     } catch (caughtError) {
       handleCaughtError(caughtError);
     }
@@ -75,10 +58,6 @@ export default function AuthenticationScreen({}: Props) {
 
   const handleOnFacebookLogin = async () => {
     try {
-      const {error} = await supabase.auth.signInWithOAuth({
-        provider: 'facebook',
-      });
-      if (error) throw error;
     } catch (caughtError) {
       handleCaughtError(caughtError);
     }
@@ -86,10 +65,6 @@ export default function AuthenticationScreen({}: Props) {
 
   const handleOnGoogleLogin = async () => {
     try {
-      const {error} = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-      });
-      if (error) throw error;
     } catch (caughtError) {
       handleCaughtError(caughtError);
     }
@@ -97,12 +72,6 @@ export default function AuthenticationScreen({}: Props) {
 
   const handleOnVerify = async () => {
     try {
-      const {data, error} = await supabase.auth.verifyOtp({
-        token_hash: '',
-        type: 'email',
-      });
-
-      if (error) throw error;
     } catch (caughtError) {
       handleCaughtError(caughtError);
     }

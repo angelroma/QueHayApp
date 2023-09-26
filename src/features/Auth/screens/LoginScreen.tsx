@@ -5,66 +5,131 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
-  Alert,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParamList} from '@navigation/types';
+import auth from '@react-native-firebase/auth';
+import {useForm, Controller} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import {Eye, EyeOff} from 'lucide-react-native';
+
+type FormData = {
+  email: string;
+  password: string;
+};
 
 type Props = StackScreenProps<AuthStackParamList, 'Login'>;
 
+const schema = yup
+  .object({
+    email: yup.string().required(),
+    password: yup.string().required(),
+  })
+  .required();
+
 export default function LoginScreen({navigation}: Props) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm<FormData>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      email: 'angelr10mar@gmail.com',
+      password: 'Mente!0Unica',
+    },
+  });
 
-  const handleLogin = () => {
-    if (email === '' || password === '') {
-      Alert.alert('Error', 'Please enter your email and password');
-      return;
-    }
+  const onSubmit = handleSubmit(data => handleLogin(data));
 
-    // Handle login logic here
+  const handleLogin = async (data: FormData) => {
+    setLoading(true);
+    auth()
+      .signInWithEmailAndPassword(data.email, data.password)
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          setErrorMessage('That email address is already in use!');
+        } else if (error.code === 'auth/invalid-email') {
+          setErrorMessage('That email address is invalid!');
+        } else {
+          setErrorMessage(error.message);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
-  const handleFacebookLogin = () => {
-    // Handle Facebook login logic here
-  };
+  const handleFacebookLogin = () => {};
 
-  const handleGoogleLogin = () => {
-    // Handle Google login logic here
-  };
+  const handleGoogleLogin = () => {};
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        onChangeText={setEmail}
-        value={email}
+      <Controller
+        control={control}
+        render={({field: {onChange, onBlur, value}}) => (
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              keyboardType="email-address"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+          </View>
+        )}
+        name="email"
       />
-      <View style={styles.passwordContainer}>
-        <TextInput
-          style={[styles.input, {flex: 1}]}
-          placeholder="Password"
-          secureTextEntry={isPasswordHidden}
-          onChangeText={setPassword}
-          value={password}
-        />
-        <TouchableOpacity
-          onPress={() => setIsPasswordHidden(!isPasswordHidden)}
-          style={styles.eyeIcon}>
-          {/* <Icon
-            name={isPasswordHidden ? 'eye' : 'eye-off'}
-            size={24}
-            color="#7D7D7D"
-          /> */}
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-        <Text style={styles.loginButtonText}>Login</Text>
+      {errors.email && <Text>{errors.email.message}</Text>}
+
+      <Controller
+        control={control}
+        render={({field: {onChange, onBlur, value}}) => (
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={[styles.input, {flex: 1}]}
+              placeholder="Password"
+              secureTextEntry={isPasswordHidden}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+            <TouchableOpacity
+              onPress={() => setIsPasswordHidden(!isPasswordHidden)}
+              style={styles.eyeIcon}>
+              {isPasswordHidden ? (
+                <Eye size={24} color="#7D7D7D" />
+              ) : (
+                <EyeOff size={24} color="#7D7D7D" />
+              )}
+            </TouchableOpacity>
+          </View>
+        )}
+        name="password"
+      />
+      {errors.password && <Text>{errors.password.message}</Text>}
+
+      {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
+
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={onSubmit}
+        disabled={loading}>
+        {loading ? (
+          <ActivityIndicator size="small" color="#FFF" />
+        ) : (
+          <Text style={styles.loginButtonText}>Login</Text>
+        )}
       </TouchableOpacity>
+
       <View style={styles.dividerContainer}>
         <View style={styles.divider} />
         <Text style={styles.orText}>or continue with</Text>
@@ -98,15 +163,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 16,
   },
-  input: {
-    height: 40,
-    borderColor: '#E5E5E5',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 12,
-    paddingHorizontal: 16,
-  },
-  passwordContainer: {
+  inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderColor: '#E5E5E5',
@@ -114,10 +171,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 12,
   },
-  eyeIcon: {
-    padding: 10,
-    borderLeftWidth: 1,
+  input: {
+    height: 40,
     borderColor: '#E5E5E5',
+    paddingHorizontal: 16,
+  },
+  eyeIcon: {
+    paddingHorizontal: 16,
   },
   loginButton: {
     backgroundColor: '#3498db',
@@ -159,5 +219,10 @@ const styles = StyleSheet.create({
   logo: {
     width: 30,
     height: 30,
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 12,
+    textAlign: 'center',
   },
 });

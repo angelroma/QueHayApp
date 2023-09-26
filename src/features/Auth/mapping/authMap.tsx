@@ -1,14 +1,15 @@
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {AppUser} from '@shared/types/types';
-import {Session} from '@supabase/supabase-js';
 
-export const mapSupabaseSessionToAppUser = (
-  session: Session | null,
+export const mapFirebaseUserToAppUser = (
+  user: FirebaseAuthTypes.User | null,
 ): AppUser | null => {
-  if (!session) {
+  if (!user) {
     return null;
   }
   return {
-    id: session.user.id,
-    email: session.user.email,
+    id: user.uid,
+    email: user.email,
+    role: user.isAnonymous ? 'anonymous' : 'normal',
   };
 };

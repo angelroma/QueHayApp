@@ -11,6 +11,7 @@ import AccountStack from './AccountStack';
 import {RootStackParamList} from './types';
 import AuthStack from './AuthStack';
 import SandboxStack from './SandboxStack';
+import {useAppSelector} from 'store/store';
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
@@ -37,7 +38,9 @@ const AccountScreenOptions:
 };
 
 export default function NavigationTab() {
-  const isAuthentificated = false;
+  const isAuthentificated = useAppSelector(
+    state => state.auth.user?.role === 'normal',
+  );
 
   return (
     <SafeAreaProvider>

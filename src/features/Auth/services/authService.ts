@@ -1,5 +1,4 @@
 import {createApi, fakeBaseQuery} from '@reduxjs/toolkit/query/react';
-import {supabase} from '@shared/api/client';
 
 type Credentials = {
   email: string;
