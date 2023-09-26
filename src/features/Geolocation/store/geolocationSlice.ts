@@ -28,4 +28,4 @@ const geolocationSlice = createSlice({
 });
 
 export const {setLocation, setAddress} = geolocationSlice.actions;
-export default geolocationSlice.reducer;
+export default geolocationSlice;

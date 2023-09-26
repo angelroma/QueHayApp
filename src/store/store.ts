@@ -1,5 +1,6 @@
 import {authApi} from '@features/Auth/services/authService';
 import authSlice from '@features/Auth/store/authSlice';
+import geolocationSlice from '@features/Geolocation/store/geolocationSlice';
 import {configureStore} from '@reduxjs/toolkit';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 
@@ -13,6 +14,7 @@ if (__DEV__) {
 export const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
+    geolocation: geolocationSlice.reducer,
     [authApi.reducerPath]: authApi.reducer,
   },
   middleware: getDefaultMiddleware =>

@@ -1,26 +1,26 @@
-// hooks/useGeolocation.ts
-
 import {useEffect} from 'react';
 import Geolocation from '@react-native-community/geolocation';
 import {useDispatch} from 'react-redux';
+import axios from 'axios';
 import {
   setAddress,
   setLocation,
-} from '@features/geolocation/store/geolocationSlice';
+} from '@features/Geolocation/store/geolocationSlice';
 
-const GOOGLE_MAPS_API_KEY = 'YOUR_API_KEY_HERE';
+const CLOUD_FUNCTION_URL = 'https://geolocation-u63tbz7ytq-uc.a.run.app';
 
 async function getReadableAddress(
   latitude: number,
   longitude: number,
 ): Promise<string | null> {
   try {
-    const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`,
-    );
-    const data = await response.json();
-    if (data.results && data.results.length > 0) {
-      return data.results[0].formatted_address;
+    const response = await axios.post(CLOUD_FUNCTION_URL, {
+      lat: latitude,
+      lng: longitude,
+    });
+    const data = response.data;
+    if (data && data.address) {
+      return data.address;
     }
     return null;
   } catch (error) {
@@ -38,11 +38,11 @@ export default function useGeolocation() {
         const {latitude, longitude} = position.coords;
         dispatch(setLocation({latitude, longitude}));
 
-        const fetchedAddress = await getReadableAddress(latitude, longitude);
-        if (!fetchedAddress) {
+        const address = await getReadableAddress(latitude, longitude);
+        if (!address) {
           return;
         }
-        dispatch(setAddress(fetchedAddress));
+        dispatch(setAddress(address));
       },
       error => {
         console.log(error.code, error.message);
