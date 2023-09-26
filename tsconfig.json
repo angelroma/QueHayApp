@@ -12,6 +12,7 @@
       "@assets/*": ["assets/*"],
       "@features/*": ["features/*"],
       "@shared/*": ["shared/*"],
+      "@store/*": ["store/*"]
     }
   },
   "exclude": [
