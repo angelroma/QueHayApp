@@ -1,121 +1,149 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
+  ActivityIndicator,
   View,
-  Text,
-  TextInput,
-  FlatList,
-  SafeAreaView,
   StyleSheet,
-  TouchableOpacity,
+  Text,
+  SafeAreaView,
 } from 'react-native';
-import {HeaderBackButton} from '@react-navigation/elements';
 import {StackScreenProps} from '@react-navigation/stack';
-import {MainStackParamList} from '@navigation/types';
+import {FlashList} from '@shopify/flash-list';
+import * as ArtifactTypes from '@features/Artifact/types';
+import * as ArtifactMock from '@features/Artifact/mock';
+import {useAppSelector} from '@store/store';
+import {SearchStackParamList} from '@navigation/types';
+import ArtifactItem from '@features/Artifact/components/ArtifactItem';
+import {Input, InputField} from '@gluestack-ui/themed';
+import {MapPin} from 'lucide-react-native';
 
-const SEARCH_ICON_SIZE = 30;
-const CHEVRON_ICON_SIZE = 30;
-const INPUT_HEIGHT = 40;
-const INPUT_BORDER_RADIUS = 18;
-const INPUT_PADDING_HORIZONTAL = 10;
-const ITEM_PADDING = 10;
-const ITEM_MARGIN_VERTICAL = 8;
+const ON_END_REACHED_THRESHOLD = 0.5;
+const ESTIMATED_ITEM_SIZE = 300;
+const ITEMS_PER_PAGE = 20;
 
-type Props = StackScreenProps<MainStackParamList, 'Search'>;
+type Props = StackScreenProps<SearchStackParamList, 'SearchScreen'>;
 
-const SearchScreen: React.FC<Props> = ({navigation}) => {
-  const [term, setTerm] = useState('');
+const SearchScreen: React.FC<Props> = ({navigation, route}) => {
+  console.log('SearchScreen', route);
+  const [artifacts, setArtifacts] = useState<ArtifactTypes.Artifact[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const data = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+  const address = useAppSelector(state => state.geolocation.address);
 
-  const filteredData = data.filter(item =>
-    item.toLowerCase().includes(term.toLowerCase()),
+  const fetchArtifacts = useCallback(async ({page}: {page: number}) => {
+    setLoading(true);
+    const newArtifacts = await ArtifactMock.create(ITEMS_PER_PAGE * page);
+    setArtifacts(prevArtifacts => [
+      ...prevArtifacts.slice(-ITEMS_PER_PAGE * (page - 1)),
+      ...newArtifacts,
+    ]);
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchArtifacts({
+      page: 1,
+    });
+  }, [fetchArtifacts]);
+
+  const loadMoreItems = useCallback(() => {
+    fetchArtifacts({
+      page: artifacts.length / ITEMS_PER_PAGE + 1,
+    });
+  }, [artifacts, fetchArtifacts]);
+
+  const handleOnItemPress = useCallback(
+    (item: ArtifactTypes.Artifact) =>
+      navigation.push('ArtifactScreen', {id: item.id}),
+    [navigation],
   );
 
-  const renderItem = ({item}: {item: string}) => (
-    <TouchableOpacity
-      style={styles.item}
-      onPress={() => {
-        navigation.push('List', {
-          term: item,
-        });
-      }}>
-      <View style={styles.rowCenter}>
-        {/* <Icon
-          name="search"
-          size={SEARCH_ICON_SIZE}
-          color="black"
-          style={styles.iconMargin}
-        /> */}
-        <Text>{item}</Text>
-      </View>
-      {/* <Icon name="chevron-right" size={CHEVRON_ICON_SIZE} color="black" /> */}
-    </TouchableOpacity>
+  const onRefresh = useCallback(() => {
+    setArtifacts([]);
+    fetchArtifacts({
+      page: 1,
+    });
+  }, [fetchArtifacts]);
+
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: ArtifactTypes.Artifact;
+    index: number;
+  }) => (
+    <ArtifactItem
+      item={item}
+      key={`${item.id}-${index}`}
+      onPress={handleOnItemPress}
+    />
   );
+
+  const keyExtractor = (item: ArtifactTypes.Artifact) => item.id.toString();
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <View style={styles.header}>
-        <HeaderBackButton onPress={() => navigation.goBack()} />
-        <TextInput
-          style={styles.textInput}
-          onChangeText={setTerm}
-          value={term}
-          placeholder="Search here"
-          autoFocus
-          enablesReturnKeyAutomatically
-          returnKeyType="search"
-          keyboardType="default"
-          onSubmitEditing={() => {
-            if (term.length === 0) {
-              return;
+    <SafeAreaView style={styles.container}>
+      <View style={[styles.header]}>
+        <Input
+          onTouchStart={() =>
+            navigation.push('SearchTermScreen', {
+              term: route.params && route.params.term,
+            })
+          }
+          variant="rounded"
+          size="md"
+          backgroundColor="white"
+          borderColor="gray"
+          borderWidth={0}
+          isReadOnly={true}>
+          <InputField
+            placeholder="Enter Text here"
+            defaultValue={
+              route.params && route.params.term ? route.params.term : ''
             }
-            navigation.push('List', {term});
-          }}
-          clearButtonMode="while-editing"
-        />
+          />
+        </Input>
+
+        <View style={styles.addressContainer}>
+          <MapPin size={20} color="black" style={styles.mapPinIcon} />
+          <Text numberOfLines={1}>{address}</Text>
+        </View>
       </View>
-      <FlatList
-        data={filteredData}
-        keyExtractor={item => item}
-        renderItem={({item}) => renderItem({item})}
+      <FlashList
+        data={artifacts}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        estimatedItemSize={ESTIMATED_ITEM_SIZE}
+        onEndReached={loadMoreItems}
+        onEndReachedThreshold={ON_END_REACHED_THRESHOLD}
+        refreshing={loading}
+        onRefresh={onRefresh}
+        ListFooterComponent={
+          loading ? <ActivityIndicator style={styles.footer} /> : undefined
+        }
+        showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeAreaView: {
-    backgroundColor: 'white',
+  container: {
     flex: 1,
+  },
+  addressContainer: {
+    padding: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  footer: {
+    alignSelf: 'center',
+    margin: 20,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingRight: 10,
-    paddingTop: 10,
+    padding: 10,
   },
-  textInput: {
-    height: INPUT_HEIGHT,
-    borderColor: 'gray',
-    flex: 1,
-    borderRadius: INPUT_BORDER_RADIUS,
-    paddingHorizontal: INPUT_PADDING_HORIZONTAL,
-    backgroundColor: '#f2f2f2',
-  },
-  item: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: ITEM_PADDING,
-    marginVertical: ITEM_MARGIN_VERTICAL,
-  },
-  rowCenter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  iconMargin: {
-    marginRight: 10,
+  mapPinIcon: {
+    marginRight: 5,
   },
 });
 

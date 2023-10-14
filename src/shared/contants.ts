@@ -1,14 +1,5 @@
 import * as ArtifactTypes from '@features/Artifact/types';
 
-const FeatureIcon: {
-  [key in string]: string;
-} = {
-  'Entrega a domicilio': 'truck',
-  'Para llevar': 'shopping-bag',
-  Reservaciones: 'book-open',
-  'Servicio en mesa': 'coffee',
-};
-
 const Features: ArtifactTypes.Feature[] = [
   'Entrega a domicilio',
   'Para llevar',
@@ -17,7 +8,6 @@ const Features: ArtifactTypes.Feature[] = [
 ];
 
 const Constant = {
-  FeatureIcon,
   Features,
 };
 

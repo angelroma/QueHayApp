@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {
   View,
   Text,
@@ -11,40 +11,85 @@ import {
 import {StackScreenProps} from '@react-navigation/stack';
 import ImageGrid from '../components/ImageGrid';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {MainStackParamList} from '@navigation/types';
+import {SearchStackParamList} from '@navigation/types';
 import Constant from '@shared/contants';
 import * as ArtifactMock from '@features/Artifact/mock';
 import * as ArtifactTypes from '@features/Artifact/types';
+import {
+  ThumbsUp,
+  ThumbsDown,
+  Share2,
+  Phone,
+  Mail,
+  MapPin,
+  Truck,
+  ShoppingBag,
+  BookOpen,
+  Coffee,
+  Dices,
+  Facebook,
+  Instagram,
+  Twitter,
+  Linkedin,
+} from 'lucide-react-native';
+import {
+  Feature,
+  SocialMediaPlatform,
+  UserInteractionType,
+} from '@features/Artifact/types';
+import Toast from 'react-native-toast-message';
 
-type Props = StackScreenProps<MainStackParamList, 'Artifact'>;
+type Props = StackScreenProps<SearchStackParamList, 'ArtifactScreen'>;
 
 const ArtifactScreen: React.FC<Props> = ({}) => {
   const artifacts = ArtifactMock.create(1);
   const artifact = artifacts[0];
 
-  // const toast = useToast();
-
-  const handleCopy = (text?: string) => {
+  const handleOnCopy = useCallback((text?: string) => {
     if (!text) {
       return;
     }
     Clipboard.setString(text);
-    // toast.show({
-    //   placement: 'bottom',
-    //   render: ({id}) => {
-    //     return (
-    //       // @ts-ignore
-    //       // <Toast nativeId={id}>
-    //       //   <Toast.Description>Copiado</Toast.Description>
-    //       // </Toast>
-    //     );
-    //   },
-    // });
-  };
+    Toast.show({
+      type: 'info',
+      text1: 'Copiado',
+      text2: 'Copiado al portapapeles.',
+    });
+  }, []);
 
-  const handleUserInteraction = (type: 'like' | 'dislike') => {
+  const handleUserInteraction = useCallback((type: UserInteractionType) => {
     console.log('handleUserInteraction', type);
-  };
+  }, []);
+
+  const renderFeatureIcon = useCallback((value: Feature) => {
+    switch (value) {
+      case 'Entrega a domicilio':
+        return <Truck size={16} color="white" />;
+      case 'Para llevar':
+        return <ShoppingBag size={16} color="white" />;
+      case 'Reservaciones':
+        return <BookOpen size={16} color="white" />;
+      case 'Servicio en mesa':
+        return <Coffee size={16} color="white" />;
+      default:
+        return <Dices size={16} color="white" />;
+    }
+  }, []);
+
+  const renderSocialMediaIcon = useCallback((platform: SocialMediaPlatform) => {
+    switch (platform) {
+      case 'Facebook':
+        return <Facebook size={20} color="#888" />;
+      case 'Instagram':
+        return <Instagram size={20} color="#888" />;
+      case 'Twitter':
+        return <Twitter size={20} color="#888" />;
+      case 'LinkedIn':
+        return <Linkedin size={20} color="#888" />;
+      default:
+        return null;
+    }
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
@@ -66,12 +111,8 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
           <View style={styles.likesDislikesContainer}>
             <TouchableOpacity
               style={styles.interactionButton}
-              onPress={() => handleUserInteraction('like')}>
-              {/* <Feather
-                name={'thumbs-up'}
-                size={20}
-                color={true ? '#4E9BDE' : 'gray'}
-              /> */}
+              onPress={() => handleUserInteraction(UserInteractionType.LIKE)}>
+              <ThumbsUp size={20} color={true ? '#4E9BDE' : 'gray'} />
               <Text style={styles.userInteractionText}>
                 {artifact.userInteractions.likes}
               </Text>
@@ -79,13 +120,15 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
 
             <TouchableOpacity
               style={styles.interactionButton}
-              onPress={() => handleUserInteraction('dislike')}>
-              {/* <Feather name={'thumbs-down'} size={20} color={'gray'} /> */}
+              onPress={() =>
+                handleUserInteraction(UserInteractionType.DISLIKE)
+              }>
+              <ThumbsDown size={20} color={true ? '#4E9BDE' : 'gray'} />
             </TouchableOpacity>
           </View>
 
           <TouchableOpacity style={styles.shareButton} onPress={() => {}}>
-            {/* <Feather name={'share-2'} size={20} color={'gray'} /> */}
+            <Share2 size={20} color={'gray'} />
           </TouchableOpacity>
         </View>
 
@@ -95,30 +138,30 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
 
           {/* For Phone Number */}
           <View style={styles.contactItem}>
-            {/* <Feather name="phone" size={14} color="#666" /> */}
+            <Phone size={14} color="#666" />
             <Text
               style={styles.sectionContent}
-              onPress={() => handleCopy(artifact.primaryPhone)}>
+              onPress={() => handleOnCopy(artifact.primaryPhone)}>
               {artifact.primaryPhone}
             </Text>
           </View>
 
           {/*  Email */}
           <View style={styles.contactItem}>
-            {/* <Feather name="mail" size={14} color="#666" /> */}
+            <Mail size={14} color="#666" />
             <Text
               style={styles.sectionContent}
-              onPress={() => handleCopy(artifact.email)}>
+              onPress={() => handleOnCopy(artifact.email)}>
               {artifact.email}
             </Text>
           </View>
 
           {/* Address */}
           <View style={styles.contactItem}>
-            {/* <Feather name="map-pin" size={14} color="#666" /> */}
+            <MapPin size={14} color="#666" />
             <Text
               style={styles.sectionContent}
-              onPress={() => handleCopy(artifact.address.street)}>
+              onPress={() => handleOnCopy(artifact.address.street)}>
               {artifact.address.street}
             </Text>
           </View>
@@ -133,11 +176,7 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
                     `https://${socialMedia.platform}.com/${socialMedia.handle}`,
                   )
                 }>
-                {/* <Feather
-                  name={socialMedia.platform.toLowerCase()}
-                  size={20}
-                  color="#888"
-                /> */}
+                {renderSocialMediaIcon(socialMedia.platform)}
               </TouchableOpacity>
             ))}
           </View>
@@ -162,24 +201,24 @@ const ArtifactScreen: React.FC<Props> = ({}) => {
         {/* Features */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Features</Text>
-          {Object.keys(Constant.FeatureIcon).map((value, index) => (
-            <View style={styles.featureItemContainer} key={index}>
-              <View
-                style={
-                  artifact.features.includes(value as ArtifactTypes.Feature)
-                    ? styles.iconContainer
-                    : styles.iconContainerDisabled
-                }>
-                {/* <Feather
-                  key={index}
-                  name={Constant.FeatureIcon[value as string]}
-                  size={16}
-                  color="white"
-                /> */}
+          {Constant.Features.map((value, index) => {
+            if (!artifact.features.includes(value as ArtifactTypes.Feature)) {
+              return null;
+            }
+            return (
+              <View style={styles.featureItemContainer} key={index}>
+                <View
+                  style={
+                    artifact.features.includes(value as ArtifactTypes.Feature)
+                      ? styles.iconContainer
+                      : styles.iconContainerDisabled
+                  }>
+                  {renderFeatureIcon(value)}
+                </View>
+                <Text style={styles.featureText}>{value}</Text>
               </View>
-              <Text style={styles.featureText}>{value}</Text>
-            </View>
-          ))}
+            );
+          })}
         </View>
 
         {/* Operation Hours */}

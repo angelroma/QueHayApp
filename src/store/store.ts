@@ -1,10 +1,10 @@
-import {authApi} from '@features/Auth/services/authService';
+import {Middleware} from '@reduxjs/toolkit';
 import authSlice from '@features/Auth/store/authSlice';
 import geolocationSlice from '@features/Geolocation/store/geolocationSlice';
 import {configureStore} from '@reduxjs/toolkit';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 
-const middlewares = [authApi.middleware];
+const middlewares: Middleware[] = [];
 
 if (__DEV__) {
   const createDebugger = require('redux-flipper').default;
@@ -15,7 +15,6 @@ export const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
     geolocation: geolocationSlice.reducer,
-    [authApi.reducerPath]: authApi.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(middlewares),

@@ -21,7 +21,7 @@ type FormData = {
   password: string;
 };
 
-type Props = StackScreenProps<AuthStackParamList, 'Login'>;
+type Props = StackScreenProps<AuthStackParamList, 'LoginScreen'>;
 
 const schema = yup
   .object({
@@ -150,7 +150,7 @@ export default function LoginScreen({navigation}: Props) {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+      <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
         <Text style={styles.signUpLink}>Don't have an account? Sign up</Text>
       </TouchableOpacity>
     </View>

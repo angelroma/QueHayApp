@@ -78,3 +78,8 @@ export interface Artifact {
   userInteractions: UserInteraction;
   category: Category;
 }
+
+export enum UserInteractionType {
+  LIKE = 'like',
+  DISLIKE = 'dislike',
+}

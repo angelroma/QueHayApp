@@ -1,11 +1,17 @@
 import {NavigatorScreenParams} from '@react-navigation/native';
 
-export type MainStackParamList = {
-  Search: undefined;
-  List: {
+export type HomeStackParamList = {
+  HomeScreen: undefined;
+};
+
+export type SearchStackParamList = {
+  SearchScreen: {
     term?: string;
   };
-  Artifact: {
+  SearchTermScreen: {
+    term?: string;
+  };
+  ArtifactScreen: {
     id: string;
   };
   ImageListScreen: {
@@ -14,8 +20,8 @@ export type MainStackParamList = {
 };
 
 export type AuthStackParamList = {
-  Login: undefined;
-  Register: undefined;
+  LoginScreen: undefined;
+  RegisterScreen: undefined;
 };
 
 export type AccountStackParamList = {
@@ -23,12 +29,15 @@ export type AccountStackParamList = {
 };
 
 export type SandboxStackParamList = {
-  Home: undefined;
-  Authentication: undefined;
+  HomeScreen: undefined;
+  AuthenticationScreen: undefined;
 };
 
 export type RootStackParamList = {
-  Main: NavigatorScreenParams<MainStackParamList>;
-  Account: NavigatorScreenParams<AccountStackParamList | AuthStackParamList>;
-  Sandbox: NavigatorScreenParams<SandboxStackParamList>;
+  HomeStack: NavigatorScreenParams<HomeStackParamList>;
+  SearchStack: NavigatorScreenParams<SearchStackParamList>;
+  AccountStack: NavigatorScreenParams<
+    AuthStackParamList | AccountStackParamList
+  >;
+  SandboxStack: NavigatorScreenParams<SandboxStackParamList>;
 };

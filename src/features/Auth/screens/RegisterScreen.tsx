@@ -11,7 +11,7 @@ import {
 import {StackScreenProps} from '@react-navigation/stack';
 import {AuthStackParamList} from '@navigation/types';
 
-type Props = StackScreenProps<AuthStackParamList, 'Register'>;
+type Props = StackScreenProps<AuthStackParamList, 'RegisterScreen'>;
 
 export default function RegisterScreen({navigation}: Props) {
   const [email, setEmail] = useState('');
@@ -87,7 +87,7 @@ export default function RegisterScreen({navigation}: Props) {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+      <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
         <Text style={styles.loginLink}>Already have an account? Log in</Text>
       </TouchableOpacity>
     </View>

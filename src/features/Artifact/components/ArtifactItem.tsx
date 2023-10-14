@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Map} from 'lucide-react-native';
-import useBusinessState from '../../../shared/hooks/useBusinessState';
+import useBusinessState from '@shared/hooks/useBusinessState';
 import Constant from '@shared/contants';
 import {Artifact, Feature} from '@features/Artifact/types';
 
@@ -41,7 +41,7 @@ const ArtifactItem = ({
           </Text>
         </View>
         <View style={styles.features}>
-          {Object.keys(Constant.FeatureIcon).map((feature, index) => (
+          {Constant.Features.map((feature, index) => (
             <View
               key={index}
               style={
@@ -49,12 +49,13 @@ const ArtifactItem = ({
                   ? styles.iconContainer
                   : styles.iconContainerDisabled
               }>
-              <Map
+              <Text>{feature}</Text>
+              {/* <Map
                 key={index}
                 name={Constant.FeatureIcon[feature as Feature]}
                 size={14}
                 color="white"
-              />
+              /> */}
             </View>
           ))}
         </View>
